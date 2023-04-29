@@ -6,6 +6,7 @@ import About from "./pages/About";
 import Navigator from "./pages/Navigator";
 import ProductDetails from "./pages/ProductDetails";
 import Home from "./pages/Home";
+import LoginForm from "./Store/LoginForm";
 
 function App() {
   return (
@@ -24,6 +25,9 @@ function App() {
           </Route>
           <Route path="/about">
             <About />
+          </Route>
+          <Route path="/LoginForm">
+            <LoginForm />
           </Route>
           <Route path="/navigator">
             <Navigator />
