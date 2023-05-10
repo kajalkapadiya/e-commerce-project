@@ -1,72 +1,176 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-
-// const TotalItem = createContext();
+import React, { useContext } from "react";
+import CartContext from "../../storeRoom/CartContext";
 
 const Cart = (props) => {
-  const [totalAmount, setTotalAmount] = useState();
-  const [totalItem, setTotalItem] = useState();
-  const [item, setItem] = useState([]);
-  useEffect(() => {
-    loadItem();
-  }, []);
+  const cartCntx = useContext(CartContext);
+  const item = cartCntx.item;
+  const totalAmount = cartCntx.totalAmount;
 
-  const mailId = localStorage.getItem("token");
-  const emailId = mailId.replace("@", "").replace(".", "");
-
-  const loadItem = async () => {
-    let total = 0;
-    let numberOfItem = 0;
-    const result = await axios.get(
-      `https://crudcrud.com/api/dc496e0b7b3d4e27aeed27bb8dfcad71/${emailId}`
-    );
-    setItem(result.data);
-    result.data.map((prices) => {
-      // set total amount
-      total += prices.quantity * Number(prices.price);
-      setTotalAmount(total.toFixed(2));
-      //set total item
-      numberOfItem += Number(prices.quantity);
-      setTotalItem(numberOfItem);
-      console.log(totalItem);
-    });
-  };
-
-  const removeItem = async (id) => {
-    let isRemove = window.confirm("are you sure");
-    if (isRemove) {
-      await axios.delete(
-        `https://crudcrud.com/api/dc496e0b7b3d4e27aeed27bb8dfcad71/${emailId}/${id}`
-      );
-    }
-    loadItem();
-  };
   return (
-    <>
-      {/* <TotalItem.Provider value={totalItem} /> */}
-      {item.map((data) => {
-        return (
-          <div key={data._id}>
-            <div key={item._id}>
-              <div>{data.item}</div>
-              <div>{data.price}</div>
-              <div>{data.quantity}</div>
-              <button onClick={() => removeItem(data._id)}>Remove Item</button>
-            </div>
-          </div>
-        );
-      })}
+    <div
+      style={{
+        margin: "0px",
+        display: "flex",
+        position: "fixed",
+        top: "50px",
+        height: "95%",
+        right: "0",
+        backgroundColor: "rgb(255, 255, 255)",
+        border: "1px solid rgb(177, 103, 103)",
+        minHeight: "50vh",
+        overflow: "scroll",
+      }}
+    >
+      <h2 style={{ fontFamily: "cursive", textAlign: "center" }}>CART</h2>
       <div>
-        <span>Total Amount</span>
+        {item.map((data) => {
+          return (
+            <div key={data.id}>
+              {/* {console.log(data.id)} */}
+              <div
+                style={{
+                  marginTop: "45px",
+                }}
+              >
+                <span
+                  style={{
+                    alignItems: "center",
+                    borderBottom: "1px solid black",
+                    marginRight: "1.5em",
+                    marginBottom: "10px",
+                    marginTop: "10px",
+                    fontSize: "1.2rem",
+                    fontWeight: "bold",
+                    display: "flex",
+                  }}
+                >
+                  ITEM
+                </span>
+                <div
+                  style={{
+                    boxSizing: "border-box",
+                    margin: "0",
+                    padding: "0",
+                  }}
+                >
+                  {data.item}
+                </div>
+                <span
+                  style={{
+                    alignItems: "center",
+                    borderBottom: "1px solid black",
+                    marginRight: "1.5em",
+                    marginBottom: "10px",
+                    marginTop: "10px",
+                    fontSize: "1.2rem",
+                    fontWeight: "bold",
+                    display: "flex",
+                  }}
+                >
+                  PRICE
+                </span>
+                <div
+                  style={{
+                    boxSizing: "border-box",
+                    margin: "0",
+                    padding: "0",
+                  }}
+                >
+                  {data.price}
+                </div>
+                <span
+                  style={{
+                    alignItems: "center",
+                    borderBottom: "1px solid black",
+                    marginRight: "1.5em",
+                    marginBottom: "10px",
+                    marginTop: "10px",
+                    fontSize: "1.2rem",
+                    fontWeight: "bold",
+                    display: "flex",
+                  }}
+                >
+                  QUANTITY
+                </span>
+                <div
+                  style={{
+                    boxSizing: "border-box",
+                    margin: "0",
+                    padding: "0",
+                  }}
+                >
+                  {data.quantity}
+                </div>
+                <button
+                  onClick={() => {
+                    cartCntx.removeItem(data.id);
+                  }}
+                  style={{
+                    color: "white",
+                    fontWeight: "bold",
+                    background: "rgb(231,76,76)",
+                    cursor: "pointer",
+                  }}
+                >
+                  Remove Item
+                </button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <br />
+      <div style={{ margin: "5px", fontSize: "1.2rem", top: "0", right: "0" }}>
+        <span>Total Amount: </span>
         <span>{totalAmount}</span>
       </div>
       <div>
-        <button onClick={props.onClose}>close</button>
-        <button>order</button>
+        <button
+          onClick={props.onClose}
+          style={{
+            position: "absolute",
+            cursor: "pointer",
+            color: "rgb(121, 117, 117)",
+            top: "0",
+            right: "0",
+            margin: "5px",
+            fontSize: "16px",
+            fontWeight: "1000",
+            border: "1px solid rgb(121, 117, 117)",
+            borderRadius: "7px",
+            padding: "4px",
+          }}
+        >
+          X
+        </button>
+        <button
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            margin: "auto",
+            marginTop: "50px",
+            background: "#56CCF2",
+            color: "white",
+            fontSize: "1.2rem",
+            fontWeight: "bold",
+            border: "none",
+            borderRadius: "8%",
+            padding: "12px",
+            cursor: "pointer",
+          }}
+        >
+          order
+        </button>
       </div>
-    </>
+    </div>
   );
 };
 
 export default Cart;
-// export { TotalItem };
+
+// span style:
+
+// data.item style:
+
+//button style :

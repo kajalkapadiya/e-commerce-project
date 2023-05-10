@@ -10,16 +10,17 @@ import { BrowserRouter } from "react-router-dom";
 import "../node_modules/react-bootstrap/dist/react-bootstrap";
 import "../node_modules/bootstrap/dist/css/bootstrap.css";
 import { AuthContextProvider } from "./Components/auth/AuthContext";
+import CartContextProvider from "./storeRoom/CartContextProvider";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
-    <BrowserRouter>
-        <AuthContextProvider>
+    <AuthContextProvider>
+      <CartContextProvider>
+        <BrowserRouter>
           <App />
-        </AuthContextProvider>
-    </BrowserRouter>
-  </React.StrictMode>
+        </BrowserRouter>
+      </CartContextProvider>
+    </AuthContextProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

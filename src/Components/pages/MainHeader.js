@@ -1,36 +1,13 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useContext } from "react";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import MainNavigation from "../auth/MainNavigation";
+import CartContext from "../../storeRoom/CartContext";
 
 const MainHeader = (props) => {
-  // const cartCnt = useContext(CartContext);
-  // const totalItem = cartCnt.item.length;
-  const [totalItem, setTotalItem] = useState();
-  useEffect(() => {
-    loadItem();
-  }, []);
-
-  const mailId = localStorage.getItem("token");
-  let emailId;
-  if (mailId) {
-    emailId = mailId.replace("@", "").replace(".", "");
-  }
-
-  const loadItem = async () => {
-    let numberOfItem = 0;
-
-    const result = await axios.get(
-      `https://crudcrud.com/api/dc496e0b7b3d4e27aeed27bb8dfcad71/${emailId}`
-    );
-    result.data.map((quant) => {
-      numberOfItem += Number(quant.quantity);
-      console.log(numberOfItem);
-      setTotalItem(numberOfItem);
-    });
-  };
+  const cartCntx = useContext(CartContext);
+  const totalItem = cartCntx.item.length;
 
   return (
     <header>
