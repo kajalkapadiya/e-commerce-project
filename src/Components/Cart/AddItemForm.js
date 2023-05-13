@@ -1,10 +1,11 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import CartContext from "../../storeRoom/CartContext";
 import axios from "axios";
 
-let initialRender = false;
+// let initialRender = false;
 
 const AddItemForm = (props) => {
+  const [initialRender, setInitialRender] = useState(false);
   const cartCntx = useContext(CartContext);
 
   const loadData = async () => {
@@ -17,10 +18,12 @@ const AddItemForm = (props) => {
 
     if (initialRender) {
       if (id && emailId) {
-        await axios.put(
-          `https://crudcrud.com/api/9ab2030143de4ebb8621f1405ab40ee6/${emailId}/${id}`,
+        const userData = await axios.put(
+          `https://crudcrud.com/api/9d7a8ef512a94aa6bd251914e54ade48/${emailId}/${id}`,
           item
         );
+        console.log(userData);
+        
       }
     }
   };
@@ -34,10 +37,10 @@ const AddItemForm = (props) => {
     const emailId = mailId.replace("@", "").replace(".", "");
     if (!initialRender) {
       const getItem = await axios.get(
-        `https://crudcrud.com/api/9ab2030143de4ebb8621f1405ab40ee6/${emailId}`
+        `https://crudcrud.com/api/9d7a8ef512a94aa6bd251914e54ade48/${emailId}`
       );
       cartCntx.loadItem(getItem.data[0].item || []);
-      initialRender = true;
+      setInitialRender(true);
     }
   };
 
