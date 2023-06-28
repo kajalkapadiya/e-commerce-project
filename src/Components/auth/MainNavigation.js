@@ -1,14 +1,17 @@
 import { useContext } from "react";
 import AuthContext from "./AuthContext";
 import Nav from "react-bootstrap/Nav";
+import CartContext from "../../storeRoom/CartContext";
 
 const MainNavigation = () => {
   const atuhCntx = useContext(AuthContext);
+  const cartCntx = useContext(CartContext);
 
   const isLoggedIn = atuhCntx.isLoggedIn;
 
   const logoutHandler = () => {
     atuhCntx.logout();
+    cartCntx.clearCart();
   };
 
   return (

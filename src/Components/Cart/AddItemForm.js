@@ -2,51 +2,50 @@ import { useContext, useEffect, useState } from "react";
 import CartContext from "../../storeRoom/CartContext";
 import axios from "axios";
 
-// let initialRender = false;
-
 const AddItemForm = (props) => {
   const [initialRender, setInitialRender] = useState(false);
   const cartCntx = useContext(CartContext);
 
-  const loadData = async () => {
-    const mailId = localStorage.getItem("token");
-    const emailId = mailId.replace("@", "").replace(".", "");
-    const id = localStorage.getItem("_id");
-    const item = {
-      item: cartCntx.item,
+  useEffect(() => {
+    const loadData = async () => {
+      const mailId = localStorage.getItem("token");
+      const emailId = mailId.replace("@", "").replace(".", "");
+      const id = localStorage.getItem("_id");
+      const item = {
+        item: cartCntx.item,
+      };
+
+      if (initialRender) {
+        if (id && emailId) {
+          const userData = await axios.put(
+            `https://crudcrud.com/api/a016a8b88a3d45169ef2fefbdd7b6d65/${emailId}/${id}`,
+            item
+          );
+          console.log(userData);
+        }
+      }
     };
 
-    if (initialRender) {
-      if (id && emailId) {
-        const userData = await axios.put(
-          `https://crudcrud.com/api/9d7a8ef512a94aa6bd251914e54ade48/${emailId}/${id}`,
-          item
-        );
-        console.log(userData);
-        
-      }
-    }
-  };
-
-  useEffect(() => {
     loadData();
-  }, [cartCntx.item]);
-
-  const getData = async () => {
-    const mailId = localStorage.getItem("token");
-    const emailId = mailId.replace("@", "").replace(".", "");
-    if (!initialRender) {
-      const getItem = await axios.get(
-        `https://crudcrud.com/api/9d7a8ef512a94aa6bd251914e54ade48/${emailId}`
-      );
-      cartCntx.loadItem(getItem.data[0].item || []);
-      setInitialRender(true);
-    }
-  };
+  }, []);
 
   useEffect(() => {
+    const getData = async () => {
+      const mailId = localStorage.getItem("token");
+      const emailId = mailId.replace("@", "").replace(".", "");
+
+      if (!initialRender) {
+        const getItem = await axios.get(
+          `https://crudcrud.com/api/a016a8b88a3d45169ef2fefbdd7b6d65/${emailId}`
+        );
+        cartCntx.loadItem(getItem.data[0]?.item || []);
+        setInitialRender(true);
+        console.log("getData");
+      }
+    };
+
     getData();
-  });
+  }, [cartCntx, initialRender]);
 
   const addItem = (e) => {
     e.preventDefault();
@@ -59,7 +58,6 @@ const AddItemForm = (props) => {
     };
 
     cartCntx.addItem(order);
-    // console.log(order);
   };
 
   return (
@@ -68,4 +66,5 @@ const AddItemForm = (props) => {
     </form>
   );
 };
+
 export default AddItemForm;

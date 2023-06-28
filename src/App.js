@@ -13,12 +13,12 @@ const test = async () => {
   const emailId = mailId.replace("@", "").replace(".", "");
 
   const result = await axios.get(
-    `https://crudcrud.com/api/9d7a8ef512a94aa6bd251914e54ade48/${emailId}`
+    `https://crudcrud.com/api/a016a8b88a3d45169ef2fefbdd7b6d65/${emailId}`
   );
   console.log(result.data);
   if (!result.data.length) {
     const data = await axios.post(
-      `https://crudcrud.com/api/9d7a8ef512a94aa6bd251914e54ade48/${emailId}`,
+      `https://crudcrud.com/api/a016a8b88a3d45169ef2fefbdd7b6d65/${emailId}`,
       {}
     );
     console.log(data.data);

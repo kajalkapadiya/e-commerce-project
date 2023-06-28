@@ -10,10 +10,6 @@ const cartReducer = (state, action) => {
   if (action.type === "ADD") {
     const updatedTotalAmount = state.totalAmount + action.item.price;
 
-    // console.log("before index");
-    // console.log(state.item);
-    // console.log(`before index : ${state.item}`);
-
     const existingCartItemIndex = state.item.findIndex(
       (item) => item.id === action.item.id
     );
@@ -67,7 +63,9 @@ const cartReducer = (state, action) => {
     });
     return { item: action.item, totalAmount: sum };
   }
-
+  if (action.type === "clear") {
+    return defaultCartState;
+  }
   return defaultCartState;
 };
 const CartContextProvider = (props) => {
@@ -84,6 +82,9 @@ const CartContextProvider = (props) => {
   const loadItemHandler = (item) => {
     dispatchCartAction({ type: "LOAD", item: item });
   };
+  const clearCartHandler = () => {
+    dispatchCartAction({ type: "clear" });
+  };
 
   const cartContext = {
     item: cartState.item,
@@ -91,6 +92,7 @@ const CartContextProvider = (props) => {
     addItem: addItemHandler,
     removeItem: removeItemHandler,
     loadItem: loadItemHandler,
+    clearCart: clearCartHandler,
   };
 
   return (

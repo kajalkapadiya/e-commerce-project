@@ -27,12 +27,14 @@ const Products = [
   },
 ];
 
+console.log("produc comp")
+
 const ProductsData = (props) => {
   const dataList = Products.map((data) => {
     return (
       <div key={data.id}>
-        <section className="container">
-          <div className="card-body">
+        <section className="container ">
+          <div className="card-body ">
             <h3>{data.title}</h3>
             <div className="image-container">
               <img src={data.imageUrl} alt="Album 1 img" />
